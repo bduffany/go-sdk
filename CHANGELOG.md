@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.2](https://github.com/open-feature/go-sdk/compare/v1.15.1...v1.15.2) (2025-06-25)
+
+
+### 🧹 Chore
+
+* **deps:** update test-harness digest to cc576c1 ([#391](https://github.com/open-feature/go-sdk/issues/391)) ([9908b97](https://github.com/open-feature/go-sdk/commit/9908b97485749b3051ed3075c3d30c92fa8fb795))
+* enable gofumpt and gci ([#392](https://github.com/open-feature/go-sdk/issues/392)) ([d9cd757](https://github.com/open-feature/go-sdk/commit/d9cd757785be761e97c710cc3a58250e5c098652))
+
 ## [1.15.1](https://github.com/open-feature/go-sdk/compare/v1.15.0...v1.15.1) (2025-06-16)
 
 
