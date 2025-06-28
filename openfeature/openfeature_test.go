@@ -782,6 +782,41 @@ func use(vals ...any) {
 	}
 }
 
+// Ensure that shutdown can be called multiple times without attempting to shut
+// down the underlying provider multiple times. Otherwise, this requires all
+// provider implementions to themselves be idempotent, which would add
+// unnecessary extra complexity to each provider implementation. For example,
+// shutdown functions often close a channel, but it is not safe to close a
+// channel more than once, so every provider implementation that wants to close
+// a channel would be required to check that shutdown has not already been
+// called.
+func TestShutdownIdempotency(t *testing.T) {
+	type testProvider struct {
+		FeatureProvider
+		StateHandler
+	}
+
+	for range 2 {
+		shutdown := false
+		provider := &testProvider{
+			FeatureProvider: NoopProvider{},
+			StateHandler: &stateHandlerForTests{
+				shutdownF: func() {
+					if shutdown {
+						t.Fatalf("shutdown called more than once")
+					}
+					shutdown = true
+				},
+			},
+		}
+		if err := SetProviderAndWait(provider); err != nil {
+			t.Fatalf("failed to set provider %v", err)
+		}
+
+		Shutdown()
+	}
+}
+
 func setupProviderWithSemaphores() (struct {
 	FeatureProvider
 	StateHandler

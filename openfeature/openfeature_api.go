@@ -240,9 +240,13 @@ func (api *evaluationAPI) initNewAndShutdownOld(clientName string, newProvider F
 		return nil
 	}
 
-	go func(forShutdown StateHandler) {
-		forShutdown.Shutdown()
-	}(v)
+	if async {
+		go func(forShutdown StateHandler) {
+			forShutdown.Shutdown()
+		}(v)
+	} else {
+		v.Shutdown()
+	}
 
 	return nil
 }
